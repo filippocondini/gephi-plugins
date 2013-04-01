@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.yourorg.try1
+OpenIDE-Module-Localizing-Bundle: org/yourorg/try1/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
