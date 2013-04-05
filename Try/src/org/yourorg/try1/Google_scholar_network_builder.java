@@ -24,7 +24,7 @@ public class Google_scholar_network_builder implements StatisticsBuilder {
 
     @Override
     public String getName() {
-        return "Google scholar network";
+        return "Google  scholar network";
      //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

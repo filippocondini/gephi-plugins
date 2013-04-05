@@ -22,7 +22,7 @@ public class Articles extends Google_scholar_network_main.Google_scholar_network
         id_father=f;
 	
 	}
-        // Getters and setters
+        //  Getters and setters
 	public String getArticle_id(){
 		return article_id;
 	}

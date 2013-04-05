@@ -43,7 +43,7 @@ public class Google_scholar_network_main implements Statistics {
         }
     }
    
-   
+   //da cancellare
     /*public void execute(Graph graph, AttributeModel attributeModel) {
       
        // selfLoopCount = 0;

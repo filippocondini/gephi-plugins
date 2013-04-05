@@ -54,7 +54,7 @@ private Google_scholar_network_main.Google_scholar_network_main statistic;
 
     @Override
     public String getDisplayName() {
-        return "Google Scholar Network";
+        return "Google  Scholar Network";
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
