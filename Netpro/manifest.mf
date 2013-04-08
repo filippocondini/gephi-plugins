@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.mynet.netpro
+OpenIDE-Module-Localizing-Bundle: org/mynet/netpro/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
