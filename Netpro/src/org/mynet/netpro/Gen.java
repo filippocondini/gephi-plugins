@@ -33,8 +33,10 @@ import org.openide.util.Exceptions;
 import org.gephi.dynamic.api.DynamicModel;
 import org.openide.util.Lookup;
 import java.util.Random;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -72,8 +74,34 @@ public static Articles listofArticle[]=new Articles[100000];
     //Articles listofArticle[]=new Articles[10000];
     //int r=2;
     int r=radius;
-    //String identificator="853264223316211048";
-    String identificator=id_article;
+    //String identificator="853264223316211048,10118837676854620386";
+    
+    String[] items = id_article.split(",");
+int d=0;
+
+String father=null;
+    int level=0;
+for (String item : items) {
+
+//System.out.println("item = " + item);
+
+
+//String identificator=item;
+    String title="a new method for energy accounting";
+    
+    
+    Articles a=new Articles(item,title,level,father);
+    if(listofArticle[d]==null){
+     listofArticle[d] = a;
+    }
+System.out.println("seme"+"  "+d+"  "  + item);
+d++;
+}
+    
+    
+    
+    
+ /*   String identificator=id_article;
     String title="a new method for energy accounting";
     String father=null;
     int level=0;
@@ -81,7 +109,7 @@ public static Articles listofArticle[]=new Articles[100000];
     Articles a=new Articles(identificator,title,level,father);
     if(listofArticle[0]==null){
      listofArticle[0] = a;
-    }
+    }*/
     
     //net=net+a.getArticle_id()+a.getArticle_level()+"\n";
  
@@ -92,7 +120,7 @@ public static Articles listofArticle[]=new Articles[100000];
        String source= listofArticle[i].getArticle_id();
 
       int l=listofArticle[i].getArticle_level();
-        System.out.println("I'm analyzing:"+source +"  "+l);
+        System.out.println("I'm analyzing:"+source +"  "+l+"("+i+")");
      //   net=net + "analizzo questo:"+source +"  "+l+"\n";
         if(l<r){
             
@@ -180,18 +208,20 @@ catch(InterruptedException ie){
      
     // if(t==0){
        Articles a =new Articles(id,title,level,father);
+       int t=0;
        int g=0;
       for(int h=0;g<1;h++){
       if(listofArticle[h]==null){
      listofArticle[h] = a;
      g++;
+     t=h;
           }//end if
       
           }//end for
       String b=a.getArticle_id();
       int c=a.getArticle_level();
       String d=a.getid_father();
-      System.out.println(b +"   level:"+c+"       father:"+d+"\n");
+      System.out.println(b +"   level:"+c+"  ("+t+")  "+         "       father:"+d+"\n");
       
   //   }//end if
       
@@ -213,11 +243,43 @@ catch(InterruptedException ie){
        
          @Override
     public  void generate(ContainerLoader container)    {
-             
+           //14578813871626079601,14556101359633585337,1011810338192237073  
         
 
-String id_article = JOptionPane.showInputDialog(null, "Insert the id of the article", "Article id", JOptionPane.PLAIN_MESSAGE);
-String radius = JOptionPane.showInputDialog(null, "Insert the radious", "Radious", JOptionPane.PLAIN_MESSAGE);
+//String id_article = JOptionPane.showInputDialog(null, "Insert the id of the article", "Article id", JOptionPane.PLAIN_MESSAGE);
+//String radius = JOptionPane.showInputDialog(null, "Insert the radious", "Radious", JOptionPane.PLAIN_MESSAGE);
+
+         String id_article="";
+         String radius="";
+                 
+JTextField xField = new JTextField(20);
+      JTextField yField = new JTextField(2);
+
+      JPanel myPanel = new JPanel();
+      myPanel.add(new JLabel("Insert the id of the articles:"));
+      myPanel.add(xField);
+      myPanel.add(Box.createHorizontalStrut(20)); // a spacer
+      myPanel.add(new JLabel("Insert the radious:"));
+      myPanel.add(yField);
+
+      int result = JOptionPane.showConfirmDialog(null, myPanel, 
+               "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+         
+         id_article=xField.getText();
+         radius=yField.getText();
+         //System.out.println(a);
+         //System.out.println(b);
+      }
+
+//String Stringa = "1, 2, 3, 4, 5, 6";
+//Numeri = Split(Stringa, ",");
+
+//String data = "1,Diego Maradona,Calciatore,Argentina";
+
+
+
+//JPanel panel = new JPanel();
 
 //int conferma = JOptionPane.showConfirmDialog(null, "Seleziona sì, no o cancella", "Scegli un'opzione", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 //String output = "Hai scritto: \"" + messaggio + "\" ed hai cliccato sul pulsante: " + conferma;
@@ -280,12 +342,16 @@ String radius = JOptionPane.showInputDialog(null, "Insert the radious", "Radious
             
             
           container.addNode(n1);
-        
+        System.out.println(i);
            
         }//end if
       }//end for
       
-       for(int i=1;Articles.listofArticle[i]!=null;i++){
+      int o=0;
+      while(Articles.listofArticle[o].getArticle_level()==0){
+      o++;
+      }
+       for(int i=o;Articles.listofArticle[i]!=null;i++){
        if(Articles.listofArticle[i]!=null){
           // NodeDraft n1 = container.factory().newNodeDraft();
           // n1.setLabel(Articles.listofArticle[i].getArticle_id());
