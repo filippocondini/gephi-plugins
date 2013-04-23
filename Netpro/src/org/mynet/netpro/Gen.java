@@ -266,14 +266,15 @@ String radius = JOptionPane.showInputDialog(null, "Insert the radious", "Radious
             colum = container.getAttributeModel().getNodeTable().addColumn("status", AttributeType.STRING);
         }
        //   AttributeColumn colu = container.getAttributeModel().getNodeTable().addColumn("title", AttributeType.STRING);
-        String category;
+        String status="";
         if(Articles.listofArticle[i].getArticle_level()==0)
-            category="entry point";
+            status="entry point";
         if(Articles.listofArticle[i].getArticle_level()==r)
-            category="only cited";
-        else
-            category="processed";
-          n1.addAttributeValue(colum, Articles.listofArticle[i].getArticle_name());
+            status="only cited";
+        if(Articles.listofArticle[i].getArticle_level()>0&&Articles.listofArticle[i].getArticle_level()<r)
+            status="processed";
+        
+          n1.addAttributeValue(colum, status);
             
             
             
