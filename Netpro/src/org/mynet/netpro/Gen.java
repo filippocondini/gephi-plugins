@@ -20,6 +20,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.awt.*;
 
 import org.gephi.data.attributes.api.*;
 import org.gephi.graph.api.Edge;
@@ -30,43 +31,49 @@ import org.gephi.graph.api.Node;
 import org.gephi.statistics.spi.*;
 import org.openide.util.Exceptions;
 import org.gephi.dynamic.api.DynamicModel;
+import org.openide.util.Lookup;
+import java.util.Random;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.plaf.basic.BasicOptionPaneUI;
+import javax.swing.text.JTextComponent;
+import org.gephi.io.generator.spi.Generator;
+import org.gephi.io.generator.spi.GeneratorUI;
+import org.gephi.io.importer.api.ContainerLoader;
+import org.gephi.io.importer.api.EdgeDraft;
+import org.gephi.io.importer.api.NodeDraft;
+//import org.gephi.utils.progress.Progress;
+//import org.gephi.utils.progress.ProgressTicket;
+import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
+import org.openide.util.Lookup;
+import org.openide.util.NbBundle;
+import org.openide.util.lookup.ServiceProvider;
 @ServiceProvider(service = Generator.class)
 /**
  *
  * @author Administrator
  */
-public class Gen implements Generator,Statistics{
+public class Gen implements Generator/*,Statistics*/{
       protected ProgressTicket progress;
     protected boolean cancel = false;
 public static Articles listofArticle[]=new Articles[100000];
-public static String net="";
+//public static String net="";
+//protected int numberOfNodes = 50;
+ //   protected double wiringProbability = 0.05;
    
-        
-            //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA         
-    
-    
 
-   @Override
-    public void execute(GraphModel graphModel, AttributeModel attributeModel)  {
-      Graph graph = graphModel.getGraphVisible();
-        //  execute(graph, attributeModel);
-        //prova
-         
-    try {
-            List_scroll();
-         
-        } catch (Exception ex) {
-            Exceptions.printStackTrace(ex);
-        }
-        
    
-   }
-   //MAIN METHOD, SCROLL LIST
-    public static void List_scroll(/*String[] args*/) throws Exception {
+    public static void List_scroll(int radius,String id_article) throws Exception {
     //Articles listofArticle[]=new Articles[10000];
-    int r=2;
-    
-    String identificator="853264223316211048";
+    //int r=2;
+    int r=radius;
+    //String identificator="853264223316211048";
+    String identificator=id_article;
     String title="a new method for energy accounting";
     String father=null;
     int level=0;
@@ -76,7 +83,7 @@ public static String net="";
      listofArticle[0] = a;
     }
     
-    net=net+a.getArticle_id()+a.getArticle_level()+"\n";
+    //net=net+a.getArticle_id()+a.getArticle_level()+"\n";
  
             
     for(int i=0;listofArticle[i]!=null;i++){
@@ -86,7 +93,7 @@ public static String net="";
 
       int l=listofArticle[i].getArticle_level();
         System.out.println("I'm analyzing:"+source +"  "+l);
-        net=net + "analizzo questo:"+source +"  "+l+"\n";
+     //   net=net + "analizzo questo:"+source +"  "+l+"\n";
         if(l<r){
             
             level=l+1;
@@ -97,19 +104,7 @@ public static String net="";
     
     }//end of method list scroll
    
-  // @Override
-    public String getReport(){
-       
-    String report ="test\n"+net;
-       // for(int k=0;k<listofArticle.length;k++){
-         //   report=report+listofArticle[k].getArticle_id()+"\n";
-        //}
-      return report;
-}
-    public int getProjectFirst(){
-        int prova=3;
-        return prova;//selfLoopCount;
-    }
+  
     ///da qui in poi scrivo tutti i cazzo di metodi
     public static void extract_pages(String source, int level) throws Exception,InterruptedException{
         
@@ -119,14 +114,14 @@ public static String net="";
             String url=(Url(source,j));
             try{
   //do what you want to do before sleeping
-  Thread.currentThread().sleep(10000);//sleep for 1000 ms
+  Thread.currentThread().sleep(20000);//sleep for 1000 ms
   //do what you want to do after sleeptig
 }
 catch(InterruptedException ie){
         
 //If this thread was intrrupted by nother thread 
 }   
-            extract_source(url,level,source);//devo risolvere il problema delle eccezioni
+            extract_source(url,level,source);
         }
     }
     public static void extract_source(String url,int level, String source)throws Exception{
@@ -161,27 +156,46 @@ catch(InterruptedException ie){
       
         Pattern pattern = Pattern.compile("cites=([^<]+)&amp;as_sdt");
        java.util.regex.Matcher matcher = pattern.matcher(input);
+       Pattern patterntit = Pattern.compile("\">([^<]+)</a></h3><div");
+       java.util.regex.Matcher matchertit = patterntit.matcher(input);
        int i=0;//per la prova
-  while(matcher.find()/*&i<3*/) {
+  while(matcher.find() && matchertit.find()&&i<2) {
       i++;//per la prova
     //System.out.println("Sottosequenza : "+matcher.group());
       String father=source;
-      String title="no title";
+      String title=matchertit.group(1);
+      //String title="tiotlo";
       String id=matcher.group(1);
-      Articles a =new Articles(id,title,level,father);
+     
       
+  // int t=0;
+   //  for(int s=0;listofArticle[s]!=null;s++){
+   //  System.out.println("lunghezza  "+listofArticle.length);    
+   // System.out.println("id"+id);
+   // System.out.println("param"+ s+" "+listofArticle[s].getArticle_id());
+   //  if( id.equals(listofArticle[s].getArticle_id())){
+   //  t++;
+   //  }  
+   //  }
+     
+    // if(t==0){
+       Articles a =new Articles(id,title,level,father);
        int g=0;
       for(int h=0;g<1;h++){
       if(listofArticle[h]==null){
      listofArticle[h] = a;
      g++;
           }//end if
+      
           }//end for
       String b=a.getArticle_id();
       int c=a.getArticle_level();
       String d=a.getid_father();
       System.out.println(b +"   level:"+c+"       father:"+d+"\n");
-      net=net + b +"   level:"+c+"       father:"+d+"\n";
+      
+  //   }//end if
+      
+      //net=net + b +"   level:"+c+"       father:"+d+"\n";
      // System.out.println(id);
     //System.out.println("Sottogruppo 1 : "+matcher.group(1));
             }
@@ -194,20 +208,25 @@ catch(InterruptedException ie){
   //http://scholar.google.it/scholar?start=00&cites=10291899245580779450
   return Url;
   }
-    //finiti tutti i cazzo di metodi
-  
-        //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   
         
-        
-        
-        
-        
-        
+       
          @Override
-    public  void generate(ContainerLoader container)  {
+    public  void generate(ContainerLoader container)    {
+             
         
+
+String id_article = JOptionPane.showInputDialog(null, "Insert the id of the article", "Article id", JOptionPane.PLAIN_MESSAGE);
+String radius = JOptionPane.showInputDialog(null, "Insert the radious", "Radious", JOptionPane.PLAIN_MESSAGE);
+
+//int conferma = JOptionPane.showConfirmDialog(null, "Seleziona sì, no o cancella", "Scegli un'opzione", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+//String output = "Hai scritto: \"" + messaggio + "\" ed hai cliccato sul pulsante: " + conferma;
+//JOptionPane.showMessageDialog(null, output);
+//System.exit(0);
+  int r = Integer.parseInt(radius);
+
         try {
-            List_scroll();
+            List_scroll(r,id_article);
          
         } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
@@ -215,25 +234,52 @@ catch(InterruptedException ie){
         
       for(int i=0;Articles.listofArticle[i]!=null;i++){
        if(Articles.listofArticle[i]!=null){
+           if(Articles.listofArticle[i].getArticle_id()==null)
+           {System.out.println("cazzo qui + il problema  "+i);}
            NodeDraft n1 = container.factory().newNodeDraft();
            n1.setLabel(Articles.listofArticle[i].getArticle_id());
            n1.setId(Articles.listofArticle[i].getArticle_id());
+           int j=Articles.listofArticle[i].getArticle_level();
+          int g =255-j*50;
+           if(g<0){ g =0;}
            
+           n1.setColor(0,g , 0);
+           //853264223316211048
+           AttributeColumn col = null;
+        if ((col = container.getAttributeModel().getNodeTable().getColumn("level")) == null) {
+            col = container.getAttributeModel().getNodeTable().addColumn("level", AttributeType.INT);
+        }
+           AttributeColumn colu = null;
+        if ((colu = container.getAttributeModel().getNodeTable().getColumn("title")) == null) {
+            colu = container.getAttributeModel().getNodeTable().addColumn("title", AttributeType.STRING);
+        }
+       //   AttributeColumn colu = container.getAttributeModel().getNodeTable().addColumn("title", AttributeType.STRING);
+          n1.addAttributeValue(colu, Articles.listofArticle[i].getArticle_name());
+           
+          // AttributeColumn col = container.getAttributeModel().getNodeTable().addColumn("level", AttributeType.INT);
+            n1.addAttributeValue(col, Articles.listofArticle[i].getArticle_level());
+           
+         //  n1.addAttributeValue(null, Articles.listofArticle[i].getArticle_name());   
+           //n1.addAttributeValue(null, Articles.listofArticle[i].getArticle_level()); 
+            AttributeColumn colum = null;
+        if ((colum = container.getAttributeModel().getNodeTable().getColumn("status")) == null) {
+            colum = container.getAttributeModel().getNodeTable().addColumn("status", AttributeType.STRING);
+        }
+       //   AttributeColumn colu = container.getAttributeModel().getNodeTable().addColumn("title", AttributeType.STRING);
+        String category;
+        if(Articles.listofArticle[i].getArticle_level()==0)
+            category="entry point";
+        if(Articles.listofArticle[i].getArticle_level()==r)
+            category="only cited";
+        else
+            category="processed";
+          n1.addAttributeValue(colum, Articles.listofArticle[i].getArticle_name());
+            
+            
+            
+            
           container.addNode(n1);
-         //NodeDraft n2= container.getNode(Articles.listofArticle[i].getid_father());
-         
-         // EdgeDraft e = container.factory().newEdgeDraft();
-         //  e.setSource(n2);
-         //   e.setTarget(n1);
-       //     List<Node> nodes = new ArrayList<Node>();
-         //  int index=0;
-           // Node m = nodes.get(index);
-            
-              //      if (n1 != m && graph.getEdge(n1, m) == null) {
-            //            Edge e = graphModel.factory().newEdge(n1, m);
-          //              graph.addEdge(e);
-        //    }
-            
+        
            
         }//end if
       }//end for
@@ -250,63 +296,67 @@ catch(InterruptedException ie){
            e.setSource(n2);
             e.setTarget(n1);
             container.addEdge(e);
-       //     List<Node> nodes = new ArrayList<Node>();
-         //  int index=0;
-           // Node m = nodes.get(index);
-            
-              //      if (n1 != m && graph.getEdge(n1, m) == null) {
-            //            Edge e = graphModel.factory().newEdge(n1, m);
-          //              graph.addEdge(e);
-        //    }
-            
-           
+      
         }//end if
       }//end for
-       // int i=Articles.listofArticle.length;
-        
-        // create nodes fatto
-     //   NodeDraft n1 = container.factory().newNodeDraft();
-       // NodeDraft n2 = container.factory().newNodeDraft();
-
-        // set node labels fatto
-      //  n1.setLabel("Hello");
-     //   n2.setLabel("World");
-
-        // create edge
-      //  EdgeDraft e = container.factory().newEdgeDraft();
-      //  e.setSource(n1);
-     //   e.setTarget(n2);
-
-        // fill in the graph fatto
-    //    container.addNode(n1);
-    //   container.addNode(n2);
-        //container.addEdge(e);
+      
     }//end of generate method
+     
+         //yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+         @Override
+   public GeneratorUI getUI() {
+       return null;
+   }
+//@Override
+ //   public GeneratorUI getUI() {
+  //      return Lookup.getDefault().lookup(UI.class);
+  //  }
 
-    @Override
-    public String getName() {
-        return " Network";
+
+ /*public void setNumberOfNodes(int numberOfNodes) {
+        if (numberOfNodes < 0) {
+            throw new IllegalArgumentException("# of nodes must be greater than 0");
+        }
+        this.numberOfNodes = numberOfNodes;
     }
 
-    @Override
-    public GeneratorUI getUI() {
-        return null;
+    public void setWiringProbability(double wiringProbability) {
+        if (wiringProbability < 0 || wiringProbability > 1) {
+            throw new IllegalArgumentException("Wiring probability must be between 0 and 1");
+        }
+        this.wiringProbability = wiringProbability;
     }
 
-    @Override
-    public boolean cancel() {
+    public int getNumberOfNodes() {
+        return numberOfNodes;
+    }
+
+    public double getWiringProbability() {
+        return wiringProbability;
+    }
+ 
+    */
+         @Override
+         public void setProgressTicket(ProgressTicket progressTicket) {
+        this.progress = progressTicket;
+        }
+          public boolean cancel() {
         cancel = true;
         return true;
     }
-
+//yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
     @Override
-    public void setProgressTicket(ProgressTicket progressTicket) {
-        this.progress = progressTicket;
+    public String getName() {
+        return " Scholar Cites Network";
     }
-    public String nodes(){
+
+   
+   public String nodes(){
         
-    return null;
+   return null;
     }
     // @Override
+
+   
     
 }
