@@ -258,12 +258,13 @@ JTextField xField = new JTextField(20);
       JPanel myPanel = new JPanel();
       myPanel.add(new JLabel("Insert the id of the articles:"));
       myPanel.add(xField);
-      myPanel.add(Box.createHorizontalStrut(20)); // a spacer
+      myPanel.add(Box.createVerticalStrut(20)); // a spacer
       myPanel.add(new JLabel("Insert the radious:"));
       myPanel.add(yField);
+      
 
       int result = JOptionPane.showConfirmDialog(null, myPanel, 
-               "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+               "Enter articles ID (separated by commma without space) and the radius ", JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
          
          id_article=xField.getText();
