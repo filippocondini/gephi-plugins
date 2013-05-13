@@ -55,9 +55,14 @@ import org.gephi.io.importer.api.NodeDraft;
 //import java.util.List;
 @ServiceProvider(service = Generator.class)
 /**
- * Plugin able to generate the google scholar network
- * nodes represent google scholar articles
- * links represent the cite of the source node (article) to the target node (article)
+ * The plugin generate the network representing the google scholar network starting 
+ * from one ore more articles. The nodes in the network represent the articles 
+ * and the links represent the citations of an article to another. 
+ * It is possible to set the dimension of the network choosing the radius and 
+ * the number of page analyzed for each research. It is also possible to choose 
+ * the waiting time between to requests to the server in order to avoid forbidden
+ * errors from the google scholar server.
+ * 
  * The action is set up in the
  * "Generate" menu in the "file" menu.
  * 
@@ -99,7 +104,7 @@ String father=null;
    //inizialize the list with the seeds
 for (String item : items) {
 
-    String title="a new method for energy accounting";
+    String title="";
     Articles a=new Articles(item,title,level,father);
   
     //if(listofArticle[d]==null){
@@ -221,9 +226,9 @@ catch(InterruptedException ie){
        Pattern patterntit = Pattern.compile("\">([^<]+)</a></h3><div");
        java.util.regex.Matcher matchertit = patterntit.matcher(input);
        //recognize the strings
-       int i=0;
+       int i=0;//to take only the first two articles for each line of code, only for test
   while(matcher.find() && matchertit.find()&&i<2) {
-      i++;//per la prova
+      i++;
     //System.out.println("Sottosequenza : "+matcher.group());
       String father=source;
       String title=matchertit.group(1);
@@ -428,7 +433,7 @@ catch(InterruptedException ie){
         cancel = true;
         return true;
     }
-//yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+
     @Override
     public String getName() {
         return " Scholar Cites Network";
@@ -440,7 +445,4 @@ catch(InterruptedException ie){
    return null;
     }
   
-
-   
-    
 }
